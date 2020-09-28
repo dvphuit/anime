@@ -3,41 +3,35 @@ import 'package:anime/src/resources/scaper.dart';
 import 'package:html/dom.dart';
 
 class VuiGhe extends Scraper {
-
   @override
   String get baseUrl => "https://vuighe.net/";
-  List<Anime> _slides;
 
   @override
-  Future<List<Anime>> fetchAnimes(int page) async {
-    return null;
-  }
-
-  @override
-  Future init() async {
+  Future<List<Anime>> getBanner() async {
     var doc = await getDocument(baseUrl);
-    parseSlides(doc);
-    return;
-  }
-
-  List<Anime> parseSlides(Document doc) {
-    _slides = List<Anime>();
     var elements = doc.querySelectorAll('.slider-item > a');
-    elements.forEach((element) {
-      var anime = Anime(
-          name: element.children[0].attributes['alt'],
-          coverUrl: element.children[0].attributes['data-src'],
-          href: element.attributes['href']);
-      _slides.add(anime);
-    });
-    return _slides;
+    return elements.map((e) => _parse(e)).toList();
   }
 
   @override
-  Future<List<Anime>> getTop() {
-    return null;
+  Future<List<Anime>> getRanking() async {
+    var doc = await getDocument('$baseUrl/bang-xep-hang');
+    var elements = doc.querySelectorAll('.tray-item > a');
+    return elements.map((e) => _parse(e)).toList();
   }
 
   @override
-  List<Anime> getSlide() => _slides;
+  Future<List<Anime>> getNewEp() async {
+    var doc = await getDocument('$baseUrl/tap-moi-nhat');
+    var elements = doc.querySelectorAll('.tray-item > a');
+    return elements.map((e) => _parse(e)).toList();
+  }
+
+  Anime _parse(Element element) {
+    return Anime(
+        name: element.children[0].attributes['alt'],
+        coverUrl: element.children[0].attributes['data-src'],
+        href: element.attributes['href']);
+  }
+
 }

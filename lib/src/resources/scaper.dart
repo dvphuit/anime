@@ -1,9 +1,10 @@
 import 'package:anime/src/models/anime.dart';
+import 'package:anime/src/resources/data_impl.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:http/http.dart';
 
-abstract class Scraper {
+abstract class Scraper  implements IDataRoutes{
   String baseUrl;
 
   Future<Document> getDocument(String url) async {
@@ -15,11 +16,4 @@ abstract class Scraper {
     throw Exception("can not parse document.");
   }
 
-  Future init();
-
-  List<Anime> getSlide();
-
-  Future<List<Anime>> fetchAnimes(int page);
-
-  Future<List<Anime>> getTop();
 }

@@ -18,17 +18,19 @@ class Loaded extends ViewState {
 }
 
 class Result<T> extends ViewState<T> {
+  final AnimeRoute route;
   final T data;
-  const Result(this.data);
+
+  const Result(this.route, this.data);
 
   @override
   bool operator ==(Object o) {
     if (identical(this, o)) return true;
-    return o is Result && o.data == data;
+    return o is Result && o.data == data && o.route == route;
   }
 
   @override
-  int get hashCode => data.hashCode;
+  int get hashCode => route.hashCode;
 }
 
 class Error extends ViewState {

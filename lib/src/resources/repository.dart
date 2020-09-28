@@ -1,17 +1,17 @@
 import 'package:anime/src/models/anime.dart';
+import 'package:anime/src/resources/data_impl.dart';
 import 'package:anime/src/resources/scaper.dart';
 import 'package:anime/src/resources/vuighe.dart';
 
-class Repository {
+class Repository implements IDataRoutes {
   Scraper scrapper = VuiGhe();
 
-  Future init() async {
-    await scrapper.init();
-  }
+  @override
+  Future<List<Anime>> getBanner() async => scrapper.getBanner();
 
-  List<Anime> getSlide() => scrapper.getSlide();
+  @override
+  Future<List<Anime>> getNewEp() async => scrapper.getNewEp();
 
-  Future<List<Anime>> fetchAnimes(int page) async {
-    return scrapper.fetchAnimes(page);
-  }
+  @override
+  Future<List<Anime>> getRanking() async => scrapper.getRanking();
 }
